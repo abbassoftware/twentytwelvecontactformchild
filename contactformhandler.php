@@ -19,7 +19,21 @@ class ContactFormHandler {
     }
 
     public function sendContactForm() {
-    	echo "form submitted";
+    	$contactName = $_POST['contactname'] ;
+    	$contactEmail = $_POST['contactemail'];
+    	$contactContent = $_POST['contactcontent'];
+
+    	$emailTo = get_option( 'admin_email');
+
+
+    	$subject = 'New contact from  From '.$contactName;
+		$body = "Contact Name: $contactName \n\nContact Email: $contactEmail \n\nContact contents: $contactContent";
+		$headers = 'From: '.$contactName.' <'.$emailTo.'>' . "\r\n" . 'Reply-To: ' . $contactEmail;
+
+		wp_mail($emailTo, $subject, $body, $headers);
+
+		echo "Cotact us send. We will revert to your query soon.";
+		
     }
 
     function isNonceSet() {
