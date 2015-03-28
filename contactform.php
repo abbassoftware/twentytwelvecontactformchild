@@ -11,10 +11,7 @@ Template Name: Contact
 	<div id="primary" class="site-content">
 		<div id="content" role="main">
 
-			<?php 
-				$wpContactFormObj = new ContactFormHandler();  
-				$wpContactFormObj->handleContactForm(); 
-			?>
+		
 
 		</div><!-- #content -->
 	</div><!-- #primary -->
