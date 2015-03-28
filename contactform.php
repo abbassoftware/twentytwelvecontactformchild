@@ -13,7 +13,7 @@ Template Name: Contact
 
 			<?php 
 				$wpContactFormObj = new ContactFormHandler();  
-				$wpContactFormObj->displayContactForm(); 
+				$wpContactFormObj->handleContactForm(); 
 			?>
 
 		</div><!-- #content -->

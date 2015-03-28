@@ -3,6 +3,52 @@
 
 class ContactFormHandler {
 
+	function handleContactForm() {
+    
+
+		if($this->isFormSubmitted() && $this->isNonceSet()) {
+			if($this->isFormValid()) {
+				$this->sendContactForm();
+			} else {
+				$this->displayContactForm();
+			}
+		} else {
+			$this->displayContactForm();
+		}
+
+    }
+
+    public function sendContactForm() {
+    	echo "form submitted";
+    }
+
+    function isNonceSet() {
+    	if( isset( $_POST['nonce_field_for_submit_contact_form'] )  &&
+    	  wp_verify_nonce( $_POST['nonce_field_for_submit_contact_form'], 'submit_contact_form' ) ) return true;
+    	else return false;
+    }
+
+    function isFormValid() {
+    	//Check all mandatory fields are present.
+		if ( trim( $_POST['contactname'] ) === '' ) {
+			$error = 'Please enter your name.';
+			$hasError = true;
+		} else if (!filter_var($_POST['contactemail'], FILTER_VALIDATE_EMAIL)  ) {
+			$error = 'Please enter a valid email.';
+			$hasError = true;
+		} else if ( trim( $_POST['contactcontent'] ) === '' ) {
+			$error = 'Please enter the content.';
+			$hasError = true;
+		} 
+
+		//Check if any error was detected in validation.
+		if($hasError == true) {
+			echo $error;
+			return false;
+		}
+		return true;
+    }
+
 	//This function displays the Contact form.
     public function displayContactForm() {
     	?>
@@ -12,19 +58,19 @@ class ContactFormHandler {
 			    <fieldset>
 			        <label for="name">Your Name</label>
 			 
-			        <input type="text" name="name" id="name" />
+			        <input type="text" name="contactname" id="contactname" />
 			    </fieldset>
 
 			    <fieldset>
 			        <label for="email">Your Email</label>
 			 
-			        <input type="text" name="email" id="email" />
+			        <input type="text" name="contactemail" id="contactemail" />
 			    </fieldset>
 			 
 			    <fieldset>
 			        <label for="content">Contents</label>
 			 
-			        <textarea name="content" id="content" rows="10" cols="35" ></textarea>
+			        <textarea name="contactcontent" id="contactcontent" rows="10" cols="35" ></textarea>
 			    </fieldset>
 			 
 			    <fieldset>
@@ -36,6 +82,10 @@ class ContactFormHandler {
 			</form>
 		</div>
 		<?php
+    }
+    function isFormSubmitted() {
+    	if( isset( $_POST['submitContactForm'] ) ) return true;
+    	else return false;
     }
 }
 
